@@ -1,0 +1,55 @@
+{
+  "name": "sqltools-h2-driver",
+  "displayName": "SQLTools H2 Driver",
+  "description": "H2 database driver for SQLTools (via a tiny Java JDBC bridge)",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.60.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets",
+    "Formatters",
+    "Other"
+  ],
+  "keywords": [
+    "sqltools-driver",
+    "h2",
+    "sql"
+  ],
+  "icon": "icons/default.png",
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "*"
+  ],
+  "extensionDependencies": [
+    "mtxr.sqltools"
+  ],
+  "scripts": {
+    "build": "esbuild src/extension.ts src/ls/plugin.ts --bundle --platform=node --target=node16 --external:vscode --outdir=out",
+    "package": "npm run build && vsce package",
+    "vscode:prepublish": "npm run build"
+  },
+  "dependencies": {
+    "@sqltools/base-driver": "latest",
+    "@sqltools/types": "latest",
+    "uuid": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.60.0",
+    "@vscode/vsce": "^2.24.0",
+    "esbuild": "^0.21.0",
+    "typescript": "^5.4.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "sqltools-h2.downloadLatestJar",
+        "title": "SQLTools H2: Download latest h2.jar"
+      }
+    ]
+  }
+}

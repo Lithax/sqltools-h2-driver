@@ -1,0 +1,41 @@
+{
+  "ui:order": [
+    "connectionMethod",
+    "databaseFile",
+    "autoServer",
+    "createIfMissing",
+    "server",
+    "port",
+    "database",
+    "jdbcUrl",
+    "urlParams",
+    "username",
+    "usePassword",
+    "password",
+    "h2Source",
+    "h2Jar",
+    "javaPath"
+  ],
+  "databaseFile": {
+    "ui:widget": "file",
+    "ui:options": { "accept": ".db" },
+    "ui:help": "Pick an existing .mv.db file or type a path for a new one (the .mv.db extension is optional). Use an absolute path or ~/..."
+  },
+  "autoServer": {
+    "ui:help": "Needed if another program (with AUTO_SERVER=TRUE) has the same file open."
+  },
+  "database": {
+    "ui:help": "What comes after host:port in the URL, e.g. ~/test, test or mem:test."
+  },
+  "urlParams": {
+    "ui:help": "Optional, separated by ;  e.g. MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE"
+  },
+  "password": { "ui:widget": "password" },
+  "h2Jar": {
+    "ui:widget": "file",
+    "ui:options": { "accept": ".jar" }
+  },
+  "h2Source": {
+    "ui:help": "Auto-download fetches the newest H2 from Maven Central on first connect (or run the command 'SQLTools H2: Download latest h2.jar')."
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "definitions": {
+    "urlParams": {
+      "title": "Extra URL parameters",
+      "type": "string"
+    },
+    "password": {
+      "title": "Password",
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "properties": {
+    "connectionMethod": {
+      "title": "Connect using",
+      "type": "string",
+      "enum": ["Embedded (file)", "Server (TCP)", "JDBC URL"],
+      "default": "Embedded (file)"
+    },
+    "username": {
+      "title": "Username",
+      "type": "string",
+      "default": "sa"
+    },
+    "usePassword": {
+      "title": "Password mode",
+      "type": "string",
+      "enum": ["Use empty password", "Save as plaintext in settings", "Ask on connect"],
+      "default": "Use empty password"
+    },
+    "h2Source": {
+      "title": "H2 jar",
+      "type": "string",
+      "enum": ["Auto-download latest H2", "Use my own h2.jar"],
+      "default": "Auto-download latest H2"
+    },
+    "javaPath": {
+      "title": "Java executable (Java 11+)",
+      "type": "string",
+      "default": "java"
+    }
+  },
+  "dependencies": {
+    "connectionMethod": {
+      "oneOf": [
+        {
+          "properties": {
+            "connectionMethod": { "enum": ["Embedded (file)"] },
+            "databaseFile": {
+              "title": "Database file",
+              "type": "string",
+              "minLength": 1
+            },
+            "autoServer": {
+              "title": "Allow other processes to open it too (AUTO_SERVER)",
+              "type": "boolean",
+              "default": false
+            },
+            "createIfMissing": {
+              "title": "Create the database if it doesn't exist",
+              "type": "boolean",
+              "default": false
+            },
+            "urlParams": { "$ref": "#/definitions/urlParams" }
+          },
+          "required": ["databaseFile"]
+        },
+        {
+          "properties": {
+            "connectionMethod": { "enum": ["Server (TCP)"] },
+            "server": {
+              "title": "Server address",
+              "type": "string",
+              "minLength": 1,
+              "default": "localhost"
+            },
+            "port": {
+              "title": "Port",
+              "type": "integer",
+              "minimum": 1,
+              "default": 9092
+            },
+            "database": {
+              "title": "Database (path or name on the server)",
+              "type": "string",
+              "minLength": 1
+            },
+            "urlParams": { "$ref": "#/definitions/urlParams" }
+          },
+          "required": ["server", "port", "database"]
+        },
+        {
+          "properties": {
+            "connectionMethod": { "enum": ["JDBC URL"] },
+            "jdbcUrl": {
+              "title": "JDBC URL",
+              "type": "string",
+              "minLength": 1,
+              "default": "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"
+            }
+          },
+          "required": ["jdbcUrl"]
+        }
+      ]
+    },
+    "usePassword": {
+      "oneOf": [
+        { "properties": { "usePassword": { "enum": ["Use empty password"] } } },
+        { "properties": { "usePassword": { "enum": ["Ask on connect"] } } },
+        {
+          "properties": {
+            "usePassword": { "enum": ["Save as plaintext in settings"] },
+            "password": { "$ref": "#/definitions/password" }
+          },
+          "required": ["password"]
+        }
+      ]
+    },
+    "h2Source": {
+      "oneOf": [
+        { "properties": { "h2Source": { "enum": ["Auto-download latest H2"] } } },
+        {
+          "properties": {
+            "h2Source": { "enum": ["Use my own h2.jar"] },
+            "h2Jar": {
+              "title": "Path to h2.jar",
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": ["h2Jar"]
+        }
+      ]
+    }
+  },
+  "required": ["connectionMethod"]
+}
